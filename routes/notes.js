@@ -1,37 +1,23 @@
-const express = require("express");
-const app = express();
-const path = require("path");
-// const fs = require("fs");
-const PORT = 3002;
+const notes = require('express').Router()
+const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
+const fs = require("fs");
+const db = require("./db/db.json");
 
-const api = require('./routes/index.js');
+const uuid = require('./helpers/uuid')
 
-
-// const db = require("./db/db.json");
-
-// const uuid = require('./helpers/uuid')
-
-
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
-app.use('/api', api);
-
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "/routes/index.js")));
-app.get("/notes", (req, res) =>
-  res.sendFile(path.join(__dirname, "/public/notes.html"))
+notes.get("/", (req, res) =>
+  res.sendFile(path.join(__dirname, "/routes/notes.js"))
 );
 
-app.get("/api/notes", (req, res) => {
+notes.get("/", (req, res) => {
   return res.json(db);
 });
 
-app.delete("/api/notes/:id", (req, res) => {
+notes.delete("/", (req, res) => {
   res.json(`${req.method} request received`);
 });
 
-app.post("/api/notes", (req, res) => {
+notes.post("/", (req, res) => {
   console.info(`${req.method} request received`);
   let response;
   const { title, text } = req.body;
@@ -69,7 +55,3 @@ app.post("/api/notes", (req, res) => {
     res.status(500).json("Error in posting note");
   }
 });
-
-app.listen(PORT, () =>
-  console.log(`Express server listening on port ${PORT}!`)
-);
