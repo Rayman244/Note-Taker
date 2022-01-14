@@ -1,9 +1,10 @@
 const express = require('express');
+const api = require('./notes.js');
+const notesRoute = require('./notes.js');
 
-const notesRoute = require('./notes');
+const router = express();
 
-const router = express.Router();
-
+router.use('/api', api);
 
 router.use('/notes', notesRoute);
 
