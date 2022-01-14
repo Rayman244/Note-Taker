@@ -1,5 +1,4 @@
 # Note-Taker
- deployed with Heroku https://shrouded-badlands-02817.herokuapp.com
 
 
 ## Description
